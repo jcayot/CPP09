@@ -11,7 +11,7 @@ StrictFloatToi::~StrictFloatToi() { }
 float StrictFloatToi::strictFloatToi(const std::string& string) {
 	try {
 		size_t pos;
-		float result = std::stof(string, &pos);
+		const float result = std::stof(string, &pos);
 
 		if (pos == string.size())
 			return (result);

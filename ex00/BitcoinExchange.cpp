@@ -18,7 +18,7 @@ BitcoinExchange::BitcoinExchange(const std::string& pricesFilename) {
 		while (std::getline(pricesFile, line)) {
 			valuesHistory.insert(pairFromLine(line));
 		}
-	} catch (std::exception& e) {
+	} catch (std::exception&) {
 		pricesFile.close();
 		throw;
 	}
@@ -75,7 +75,7 @@ void BitcoinExchange::evaluateLine(const std::string& line) {
 	if (date.tm_year < 2009)
 		throw std::runtime_error("Error invalid date year in file to evaluate at line : " + line);
 
-	float	valueAtDate = getValueAtDate(date);
+	const float	valueAtDate = getValueAtDate(date);
 	std::cout << lineContent[0] << amount << " = " << (valueAtDate * amount) << "\n";
 }
 
@@ -117,6 +117,8 @@ std::pair<time_t, float> BitcoinExchange::pairFromLine(const std::string& line) 
 std::tm BitcoinExchange::timeFromString(const std::string& str) {
 	const std::vector<std::string>	dateContent = CppSplit::cppSplit(str, '-');
 
+	if (dateContent[0].length() > 2 || dateContent[1].length() > 2 || dateContent[2].length() > 2)
+		throw std::runtime_error("Invalid date string");
 	const int	year = StrictAtoi::strictAtoi(dateContent[0]);
 	const int	month = StrictAtoi::strictAtoi(dateContent[1]);
 	const int	day = StrictAtoi::strictAtoi(dateContent[2]);

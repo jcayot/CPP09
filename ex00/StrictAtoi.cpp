@@ -15,5 +15,5 @@ int StrictAtoi::strictAtoi(const std::string& string) {
 		if (!std::isdigit(c))
 			throw std::invalid_argument("Input string contains non-numeric characters");
 	}
-	return std::atoi(string.c_str());
+	return (std::atoi(string.c_str()));
 }

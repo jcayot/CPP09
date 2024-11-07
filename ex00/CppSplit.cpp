@@ -6,7 +6,7 @@
 
 CppSplit::~CppSplit() { }
 
-std::vector<std::string> CppSplit::cppSplit(const std::string& string, char delim) {
+std::vector<std::string> CppSplit::cppSplit(const std::string& string, const char delim) {
 	std::vector<std::string> result;
 	std::stringstream stream(string);
 	std::string item;
