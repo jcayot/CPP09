@@ -1,7 +1,7 @@
 NAME = btc
 CC = c++
 CFLAGS = -std=c++17 -Wall -Wextra -Werror
-SRCS = BitcoinExchange.cpp CppSplit.cpp StrictFloatToi.cpp StrictAtoi.cpp main.cpp
+SRCS = BitcoinExchange.cpp CppSplit.cpp StrictFloatToi.cpp StrictAtoi.cpp SpacesClean.cpp main.cpp
 OBJS = $(SRCS:.cpp=.o)
 
 all: $(NAME)

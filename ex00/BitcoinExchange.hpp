@@ -17,7 +17,7 @@
 
 class BitcoinExchange {
 	private:
-		std::map<std::tm, float>	valuesHistory;
+		std::map<time_t, float>	valuesHistory;
 
 	public:
 		BitcoinExchange(const std::string& pricesFilename);
@@ -26,15 +26,16 @@ class BitcoinExchange {
 
 		BitcoinExchange&	operator=(const BitcoinExchange& other);
 
-		void		evaluateFile(const std::string& filename);
-		std::string	evaluateLine(const std::string& line);
-		float		getValueAtDate(const tm& tm);
+		void				evaluateFile(const std::string& filename);
 
 	private:
 		BitcoinExchange();
 
-		std::pair<std::tm, float>	pairFromLine(const std::string& line);
-		std::tm						timeFromString(const std::string& str);
+		void								evaluateLine(const std::string& line);
+		float								getValueAtDate(std::tm& time);
+		static std::pair<time_t, float>		pairFromLine(const std::string& line);
+		static std::tm						timeFromString(const std::string& str);
+		static std::string					timeToString(const std::tm& time);
 };
 
 
