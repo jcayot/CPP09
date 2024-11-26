@@ -56,13 +56,13 @@ int RPN::calculate(const int n1, const int n2, const std::string& data) {
 	if (data.length() == 1) {
 		switch (data[0]) {
 			case '+':
-				return (n1 + n2);
+				return (n2 + n1);
 			case '-':
-				return (n1 - n2);
+				return (n2 - n1);
 			case '*':
-				return (n1 * n2);
+				return (n2 * n1);
 			case '/':
-				return (n1 / n2);
+				return (n2 / n1);
 		}
 	}
 	throw std::invalid_argument("Invalid expression");

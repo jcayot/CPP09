@@ -4,8 +4,6 @@
 
 #include "BitcoinExchange.hpp"
 
-#include "SpacesClean.hpp"
-
 BitcoinExchange::BitcoinExchange(const std::string& pricesFilename) {
 	std::ifstream	pricesFile(pricesFilename);
 
@@ -61,11 +59,13 @@ void BitcoinExchange::evaluateFile(const std::string& filename) {
 
 void BitcoinExchange::evaluateLine(const std::string& line) {
 	const size_t separatorPos = line.find('|');
-	if (separatorPos == std::string::npos || separatorPos != line.find_last_of('|'))
+	if (separatorPos == std::string::npos || separatorPos != line.find_last_of('|')
+		|| separatorPos == 0 || separatorPos == line.size() - 1
+		|| line[separatorPos - 1] != ' ' || line[separatorPos + 1] != ' ')
 		throw std::runtime_error("Error invalid line format in file to evaluate at line : " + line);
 
-	const std::string timeString = SpacesClean::cleanSpaces(line.substr(0, separatorPos));
-	const std::string amountString = SpacesClean::cleanSpaces(line.substr(separatorPos + 1));
+	const std::string timeString = line.substr(0, separatorPos - 1);
+	const std::string amountString = line.substr(separatorPos + 1);
 
 	std::tm	date = {};
 	float	amount;
@@ -108,8 +108,8 @@ std::pair<time_t, float> BitcoinExchange::pairFromLine(const std::string& line) 
 	std::tm	date = {};
 	float price;
 	try {
-		date = timeFromString(SpacesClean::cleanSpaces(timeString));
-		price = StrictFloatToi::strictFloatToi(SpacesClean::cleanSpaces(amountString));
+		date = timeFromString(timeString);
+		price = StrictFloatToi::strictFloatToi(amountString);
 
 	} catch (std::exception&) {
 		throw std::runtime_error("Error invalid content in data file at line : " + line);
