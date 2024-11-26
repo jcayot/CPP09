@@ -15,6 +15,8 @@ BitcoinExchange::BitcoinExchange(const std::string& pricesFilename) {
 	try {
 		std::string line;
 		std::getline(pricesFile, line);
+		if (line != "date,exchange_rate")
+			throw std::runtime_error("Invalid prices file");
 		while (std::getline(pricesFile, line)) {
 			valuesHistory.insert(pairFromLine(line));
 		}
@@ -44,6 +46,9 @@ void BitcoinExchange::evaluateFile(const std::string& filename) {
 		throw std::runtime_error("Error opening dates file");
 
 	std::string line;
+	getline(dateFile, line);
+	if (line != "date | value")
+		throw std::runtime_error("Invalid values file");
 	while (getline(dateFile, line)) {
 		try {
 			evaluateLine(line);
@@ -59,14 +64,14 @@ void BitcoinExchange::evaluateLine(const std::string& line) {
 	if (separatorPos == std::string::npos || separatorPos != line.find_last_of('|'))
 		throw std::runtime_error("Error invalid line format in file to evaluate at line : " + line);
 
-	const std::string timeString = line.substr(0, separatorPos);
-	const std::string amountString = line.substr(separatorPos + 1);
+	const std::string timeString = SpacesClean::cleanSpaces(line.substr(0, separatorPos));
+	const std::string amountString = SpacesClean::cleanSpaces(line.substr(separatorPos + 1));
 
 	std::tm	date = {};
 	float	amount;
 	try {
-		date = timeFromString(SpacesClean::cleanSpaces(timeString));
-		amount = StrictFloatToi::strictFloatToi(SpacesClean::cleanSpaces(amountString));
+		date = timeFromString(timeString);
+		amount = StrictFloatToi::strictFloatToi(amountString);
 	} catch (std::exception& e) {
 		throw std::runtime_error(e.what() + line);
 	}
@@ -78,7 +83,7 @@ void BitcoinExchange::evaluateLine(const std::string& line) {
 		throw std::runtime_error("Error invalid date year in file to evaluate at line : " + line);
 
 	const float	valueAtDate = getValueAtDate(date);
-	std::cout << timeString << amount << " = " << (valueAtDate * amount) << "\n";
+	std::cout << timeString << " => " << amount << " = " << (valueAtDate * amount) << "\n";
 }
 
 float	BitcoinExchange::getValueAtDate(tm& time) {
