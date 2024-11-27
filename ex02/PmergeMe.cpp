@@ -7,7 +7,7 @@
 #include <iostream>
 
 std::list<u_int> PmergeMe::mergeInsertSort(const std::list<u_int>& list) {
-	size_t size = list.size();
+	const size_t size = list.size();
 	if (size < ARBITRARY_VALUE)
 		return (insertSort(list));
 
@@ -21,7 +21,7 @@ std::list<u_int> PmergeMe::mergeInsertSort(const std::list<u_int>& list) {
 }
 
 std::vector<u_int> PmergeMe::mergeInsertSort(const std::vector<u_int>& vector) {
-	size_t vectorSize = vector.size();
+	const size_t vectorSize = vector.size();
 	if (vectorSize < ARBITRARY_VALUE)
 		return (insertSort(vector));
 
@@ -32,6 +32,8 @@ std::vector<u_int> PmergeMe::mergeInsertSort(const std::vector<u_int>& vector) {
 
 	return (mergeSort(vector1, vector2));
 }
+
+PmergeMe::~PmergeMe() { }
 
 
 std::list<u_int> PmergeMe::insertSort(const std::list<u_int>& list) {
@@ -57,7 +59,7 @@ std::list<u_int> PmergeMe::insertSort(const std::list<u_int>& list) {
 std::vector<u_int> PmergeMe::insertSort(const std::vector<u_int>& vector) {
 	std::vector<u_int> result = vector;
 
-	for (u_int i = 1; i < result.size(); i++) {
+	for (int i = 1; i < result.size(); i++) {
 		u_int	temp = result[i];
 		int j = i - 1;
 		while (j >= 0 && result[j] > temp) {
