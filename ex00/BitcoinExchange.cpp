@@ -82,8 +82,12 @@ void BitcoinExchange::evaluateLine(const std::string& line) {
 	if (date.tm_year < 2009)
 		throw std::runtime_error("Error invalid date year in file to evaluate at line : " + line);
 
-	const float	valueAtDate = getValueAtDate(date);
-	std::cout << timeString << " => " << amount << " = " << (valueAtDate * amount) << "\n";
+	try {
+		const float	valueAtDate = getValueAtDate(date);
+		std::cout << timeString << " => " << amount << " = " << (valueAtDate * amount) << "\n";
+	} catch (std::exception& e) {
+		throw std::runtime_error(e.what() + line);
+	}
 }
 
 float	BitcoinExchange::getValueAtDate(tm& time) {
@@ -91,7 +95,7 @@ float	BitcoinExchange::getValueAtDate(tm& time) {
 	std::map<long, float>::iterator	it = valuesHistory.lower_bound(time_seconds);
 
 	if (it == valuesHistory.begin())
-		throw std::runtime_error("Error invalid date in file to evaluate : " + timeToString(time));
+		throw std::runtime_error("Error invalid date in file to evaluate : ");
 	if (it == valuesHistory.end() || it->first > time_seconds)
 		--it;
 	return (it->second);
@@ -146,8 +150,4 @@ std::tm BitcoinExchange::timeFromString(const std::string& str) {
 		throw std::invalid_argument("Invalid date string");
 
 	return (std::tm {0, 0, 0, day, month + 1, year, 0, 0, 0, 0, nullptr});
-}
-
-std::string BitcoinExchange::timeToString(const std::tm& time) {
-	return (std::to_string(time.tm_year) + "-" + std::to_string(time.tm_mon + 1) + "-" + std::to_string(time.tm_mday));
 }

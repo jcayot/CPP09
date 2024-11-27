@@ -34,7 +34,6 @@ class BitcoinExchange {
 		float								getValueAtDate(std::tm& time);
 		static std::pair<time_t, float>		pairFromLine(const std::string& line);
 		static std::tm						timeFromString(const std::string& str);
-		static std::string					timeToString(const std::tm& time);
 };
 
 
