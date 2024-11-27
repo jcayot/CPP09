@@ -4,8 +4,6 @@
 
 #include "RPN.hpp"
 
-#include <stdexcept>
-
 int RPN::evaluate(const std::string& expression) {
 	std::stack<int>	evaluationStack;
 
@@ -63,6 +61,8 @@ int RPN::calculate(const int n1, const int n2, const std::string& data) {
 				return (n2 * n1);
 			case '/':
 				return (n2 / n1);
+			default:
+				throw std::invalid_argument("Invalid expression");
 		}
 	}
 	throw std::invalid_argument("Invalid expression");

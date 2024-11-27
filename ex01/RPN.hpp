@@ -7,6 +7,7 @@
 
 #include <stack>
 #include <string>
+#include <stdexcept>
 
 class RPN {
 	public:
