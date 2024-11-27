@@ -16,8 +16,8 @@ float StrictFloatToi::strictFloatToi(const std::string& string) {
 		if (pos == string.size())
 			return (result);
 
-		throw std::invalid_argument("Invalid input, string contains non-float characters");
+		throw std::invalid_argument("Invalid input, string contains non-float characters at line : ");
 	} catch (const std::exception&) {
-		throw std::invalid_argument("Invalid input, unable to convert string to float");
+		throw std::invalid_argument("Invalid input, unable to convert string to float at line : ");
 	}
 }

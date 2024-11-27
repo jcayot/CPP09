@@ -94,8 +94,8 @@ float	BitcoinExchange::getValueAtDate(tm& time) {
 	const time_t					time_seconds = std::mktime(&time);
 	std::map<long, float>::iterator	it = valuesHistory.lower_bound(time_seconds);
 
-	if (it == valuesHistory.begin())
-		throw std::runtime_error("Error invalid date in file to evaluate : ");
+	if (it == valuesHistory.begin() && it->first != time_seconds)
+		throw std::runtime_error("Error invalid date in file to evaluate at line : ");
 	if (it == valuesHistory.end() || it->first > time_seconds)
 		--it;
 	return (it->second);
@@ -131,23 +131,23 @@ std::pair<time_t, float> BitcoinExchange::pairFromLine(const std::string& line) 
 std::tm BitcoinExchange::timeFromString(const std::string& str) {
 	const size_t	firstSeparatorPos = str.find('-');
 	if (firstSeparatorPos == std::string::npos)
-		throw std::runtime_error("Invalid date string");
+		throw std::runtime_error("Invalid date string at line : ");
 	const size_t	secondSeparatorPos = str.find('-', firstSeparatorPos + 1);
 	if (secondSeparatorPos == std::string::npos || secondSeparatorPos != str.find_last_of('-'))
-		throw std::runtime_error("Invalid date string");
+		throw std::runtime_error("Invalid date string at line : ");
 
 	const std::string yearString = str.substr(0, firstSeparatorPos);
 	const std::string monthString = str.substr(firstSeparatorPos + 1, secondSeparatorPos - (firstSeparatorPos + 1));
 	const std::string dayString = str.substr(secondSeparatorPos + 1);
 
 	if (yearString.length() != 4 || monthString.length() != 2 || dayString.length() != 2)
-		throw std::runtime_error("Invalid date string");
+		throw std::runtime_error("Invalid date string at line :");
 	const int	year = StrictAtoi::strictAtoi(yearString);
 	const int	month = StrictAtoi::strictAtoi(monthString);
 	const int	day = StrictAtoi::strictAtoi(dayString);
 
 	if (year < 1900 || month < 1 || month > 12 || day < 1 || day > 31)
-		throw std::invalid_argument("Invalid date string");
+		throw std::invalid_argument("Invalid date string at line :");
 
 	return (std::tm {0, 0, 0, day, month + 1, year, 0, 0, 0, 0, nullptr});
 }
