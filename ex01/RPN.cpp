@@ -60,6 +60,8 @@ int RPN::calculate(const int n1, const int n2, const std::string& data) {
 			case '*':
 				return (n2 * n1);
 			case '/':
+				if (n1 == 0)
+					throw std::invalid_argument("Division by zero");
 				return (n2 / n1);
 			default:
 				throw std::invalid_argument("Invalid expression");

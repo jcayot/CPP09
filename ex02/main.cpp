@@ -49,7 +49,7 @@ int	main(int argc, char *argv[]) {
 	const unsigned long vecTime = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
 
 	std::cout << "After: " << std::endl;
-	for (const unsigned int& it : vec) {
+	for (const unsigned int& it : list) {
 		std::cout << it << " ";
 	}
 	std::cout << std::endl;

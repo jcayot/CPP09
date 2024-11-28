@@ -8,6 +8,7 @@
 #include <list>
 #include <vector>
 #include <sys/types.h>
+#include <iostream>
 
 class PmergeMe {
 	private:
