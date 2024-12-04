@@ -65,7 +65,7 @@ void BitcoinExchange::evaluateLine(const std::string& line) {
 		throw std::runtime_error("Error invalid line format in file to evaluate at line : " + line);
 
 	const std::string timeString = line.substr(0, separatorPos - 1);
-	const std::string amountString = line.substr(separatorPos + 1);
+	const std::string amountString = line.substr(separatorPos + 2);
 
 	std::tm	date = {};
 	float	amount;

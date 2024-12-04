@@ -6,7 +6,7 @@
 # define STRICTFLOATTOI_HPP
 
 #include <string>
-
+#include <stdexcept>
 
 class StrictFloatToi {
 	private:

@@ -4,8 +4,6 @@
 
 #include "StrictFloatToi.hpp"
 
-#include <stdexcept>
-
 StrictFloatToi::~StrictFloatToi() { }
 
 float StrictFloatToi::strictFloatToi(const std::string& string) {
