@@ -15,21 +15,24 @@ class PmergeMe {
 		static constexpr int ARBITRARY_VALUE = 10;
 
 	public:
-		static std::list<u_int>		mergeInsertSort(const std::list<u_int>& list);
-		static std::vector<u_int>	mergeInsertSort(const std::vector<u_int>& vector);
+		template <typename T>
+		static T	mergeInsertSort(const T& container);
 
-		~PmergeMe();
+	~PmergeMe();
 
 	private:
-		static std::list<u_int>		insertSort(const std::list<u_int>& list);
-		static std::vector<u_int>	insertSort(const std::vector<u_int>& vector);
-		static std::list<u_int>		mergeSort(const std::list<u_int>& v1, const std::list<u_int>& v2);
-		static std::vector<u_int>	mergeSort(const std::vector<u_int>& v1, const std::vector<u_int>& v2);
+		template <typename T>
+		static T		insertSort(const T& container);
+
+		template <typename T>
+		static T		mergeSort(const T& container1, const T& container2);
 
 		PmergeMe();
 		PmergeMe(const PmergeMe &);
 
 		PmergeMe &operator=(const PmergeMe &);
 };
+
+#include "PmergeMe.tpp"
 
 #endif

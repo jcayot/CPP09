@@ -39,12 +39,12 @@ int	main(int argc, char *argv[]) {
 	std::chrono::time_point<std::chrono::system_clock> start, end;
 
 	start = std::chrono::high_resolution_clock::now();
-	list = PmergeMe::mergeInsertSort(list);
+	list = PmergeMe::mergeInsertSort<std::list<u_int>>(list);
 	end = std::chrono::high_resolution_clock::now();
 	const unsigned long listTime = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
 
 	start = std::chrono::high_resolution_clock::now();
-	vec = PmergeMe::mergeInsertSort(vec);
+	vec = PmergeMe::mergeInsertSort<std::vector<u_int>>(vec);
 	end = std::chrono::high_resolution_clock::now();
 	const unsigned long vecTime = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
 
