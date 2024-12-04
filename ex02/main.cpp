@@ -20,7 +20,7 @@ int	main(int argc, char *argv[]) {
 		try {
 			size_t idx;
 			const unsigned long num = std::stoul(argv[i], &idx, 10);
-			if (idx != strlen(argv[i]) || num > UINT_MAX)
+			if (idx != strlen(argv[i]) || num > UINT_MAX || (argv[i][0] < '0' || argv[i][0] > '9'))
 				throw std::invalid_argument("Invalid argument");
 			list.push_back(static_cast<u_int>(num));
 			vec.push_back(static_cast<u_int>(num));
