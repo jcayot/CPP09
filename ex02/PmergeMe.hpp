@@ -26,6 +26,8 @@ class PmergeMe {
 		static std::list<u_int>		mergeSort(const std::list<u_int>& v1, const std::list<u_int>& v2);
 		static std::vector<u_int>	mergeSort(const std::vector<u_int>& v1, const std::vector<u_int>& v2);
 
+		static u_int				getUnderJacobsthalNumber(u_int number);
+
 		PmergeMe();
 		PmergeMe(const PmergeMe &);
 

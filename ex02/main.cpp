@@ -2,6 +2,7 @@
 // Created by jules on 17/11/2024.
 //
 
+#include <algorithm>
 #include <cstring>
 #include <iostream>
 #include <climits>
@@ -12,6 +13,8 @@
 
 int	main(int argc, char *argv[]) {
 	if (argc < 2)
+		return (1);
+	if (argc > 1000000)
 		return (1);
 	std::list<u_int>	list;
 	std::vector<u_int>	vec;
@@ -41,11 +44,15 @@ int	main(int argc, char *argv[]) {
 	start = std::chrono::high_resolution_clock::now();
 	list = PmergeMe::mergeInsertSort(list);
 	end = std::chrono::high_resolution_clock::now();
+	if (std::is_sorted(list.begin(), list.end()) == false)
+		throw std::runtime_error("List is not sorted");
 	const unsigned long listTime = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
 
 	start = std::chrono::high_resolution_clock::now();
 	vec = PmergeMe::mergeInsertSort(vec);
 	end = std::chrono::high_resolution_clock::now();
+	if (std::is_sorted(vec.begin(), vec.end()) == false)
+		throw std::runtime_error("Vector is not sorted");
 	const unsigned long vecTime = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
 
 	std::cout << "After: " << std::endl;

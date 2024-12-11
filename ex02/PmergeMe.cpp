@@ -10,21 +10,25 @@ std::list<u_int> PmergeMe::mergeInsertSort(const std::list<u_int>& list) {
 		return (insertSort(list));
 
 	auto it = list.begin();
-	std::advance(it, size / 2);
+	u_int	splitPoint = getUnderJacobsthalNumber(size);
+	std::advance(it, splitPoint);
 	std::list<u_int> list1(list.begin(), it);
 	std::list<u_int> list2(it, list.end());
+
 	list1 = mergeInsertSort(list1);
 	list2 = mergeInsertSort(list2);
+
 	return (mergeSort(list1, list2));
 }
 
 std::vector<u_int> PmergeMe::mergeInsertSort(const std::vector<u_int>& vector) {
-	const size_t vectorSize = vector.size();
-	if (vectorSize < ARBITRARY_VALUE)
+	const size_t size = vector.size();
+	if (size < ARBITRARY_VALUE)
 		return (insertSort(vector));
 
-	std::vector<u_int> vector1(vector.begin(), vector.begin() + (vectorSize / 2));
-	std::vector<u_int> vector2(vector.begin() + (vectorSize / 2), vector.end());
+	u_int	splitPoint = getUnderJacobsthalNumber(size);
+	std::vector<u_int> vector1(vector.begin(), vector.begin() + splitPoint);
+	std::vector<u_int> vector2(vector.begin() + splitPoint, vector.end());
 	vector1 = mergeInsertSort(vector1);
 	vector2 = mergeInsertSort(vector2);
 
@@ -35,36 +39,22 @@ PmergeMe::~PmergeMe() { }
 
 
 std::list<u_int> PmergeMe::insertSort(const std::list<u_int>& list) {
-	std::list<u_int> result = list;
+	std::list<u_int> result;
 
-	for (auto it = ++result.begin(); it != result.end(); ++it) {
-		u_int temp = *it;
-		auto j = it;
-
-		while (j != result.begin()) {
-			auto prev = std::prev(j);
-			if (*prev > temp) {
-				*j = *prev;
-				j = prev;
-			} else
-				break;
-		}
-		*j = temp;
+	for (const u_int& n : list) {
+		auto it = std::lower_bound(result.begin(), result.end(), n);
+		result.insert(it, n);
 	}
 	return (result);
 }
 
 std::vector<u_int> PmergeMe::insertSort(const std::vector<u_int>& vector) {
-	std::vector<u_int> result = vector;
+	std::vector<u_int> result;
+	result.reserve(vector.size());
 
-	for (u_int i = 1; i < result.size(); i++) {
-		u_int	temp = result[i];
-		int j = i - 1;
-		while (j >= 0 && result[j] > temp) {
-			result[j + 1] = result[j];
-			j--;
-		}
-		result[j + 1] = temp;
+	for (const u_int& n : vector) {
+		auto it = std::lower_bound(result.begin(), result.end(), n);
+		result.insert(it, n);
 	}
 	return (result);
 }
@@ -102,4 +92,19 @@ std::vector<u_int> PmergeMe::mergeSort(const std::vector<u_int>& v1, const std::
 			result.push_back(v1[i++]);
 	}
 	return (result);
+}
+
+u_int PmergeMe::getUnderJacobsthalNumber(u_int number) {
+	if (number == 0)
+		return (0);
+
+	u_int previousMinus2 = 0;
+	u_int previousMinus1 = 1;
+	u_int next = 1;
+	while (next < number) {
+		next = previousMinus1 + (2 * previousMinus2);
+		previousMinus2 = previousMinus1;
+		previousMinus1 = next;
+	}
+	return (previousMinus2);
 }
