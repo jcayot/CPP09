@@ -12,7 +12,7 @@
 
 class PmergeMe {
 	private:
-		static constexpr int ARBITRARY_VALUE = 10;
+		static constexpr int ARBITRARY_VALUE = 11;
 
 	public:
 		static std::list<u_int>		mergeInsertSort(const std::list<u_int>& list);
