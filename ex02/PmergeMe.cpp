@@ -10,11 +10,6 @@ std::list<u_int> PmergeMe::sort(const std::list<u_int>& list)
 
 	u_int pairLen = doPairSorting(sortedList, 2);
 
-	std::cout << "\n" << "List : ";
-	for (u_int n : sortedList)
-		std::cout << n << " ";
-	std::cout << std::endl;
-
 	doInsertionSorting(sortedList, pairLen / 2);
 
 	return (sortedList);
@@ -26,10 +21,11 @@ std::vector<u_int> PmergeMe::sort(const std::vector<u_int>& vector)
 	return (std::vector<u_int>());
 }
 
-u_int	PmergeMe::doPairSorting(std::list<unsigned int>& list, u_int pairLen)
+u_int	PmergeMe::doPairSorting(std::list<unsigned int>& list, const u_int pairLen) // NOLINT(*-no-recursion)
 {
 	auto firstPairStart = list.begin();
 
+	// ReSharper disable once CppDFALoopConditionNotUpdated
 	while (std::distance(firstPairStart, list.end()) >= pairLen)
 	{
 		auto firstPairEnd = firstPairStart;
@@ -49,37 +45,19 @@ u_int	PmergeMe::doPairSorting(std::list<unsigned int>& list, u_int pairLen)
 	return (pairLen);
 }
 
-void PmergeMe::doInsertionSorting(std::list<unsigned int>& main, u_int pairLen)
+void PmergeMe::doInsertionSorting(std::list<unsigned int>& main, const u_int pairLen) // NOLINT(*-no-recursion)
 {
 	std::list<u_int> aux, rem;
 
 	createAuxiliaryRemaining(main, pairLen, aux, rem);
-
-	{
-		std::cout << "Start" << std::endl;
-		std::cout << "Pair length: " << pairLen << std::endl;
-		std::cout << "Main : ";
-		for (u_int n : main)
-			std::cout << n << " ";
-		std::cout << std::endl;
-		std::cout << "Aux : ";
-		for (u_int n : aux)
-			std::cout << n << " ";
-		std::cout << std::endl;
-	}
 	insertAuxiliary(main, pairLen, aux);
 	handleRemaining(main, rem, pairLen);
 
-	std::cout << "END " << std::endl;
-	for (u_int n : main)
-		std::cout << n << " ";
-	std::cout << std::endl;
-	std::cout << std::endl;
 	if (pairLen > 1)
 		doInsertionSorting(main, pairLen / 2);
 }
 
-void PmergeMe::createAuxiliaryRemaining(std::list<unsigned int>& main, u_int pairLen, std::list<u_int>& aux, std::list<u_int>& rem)
+void PmergeMe::createAuxiliaryRemaining(std::list<unsigned int>& main, const u_int pairLen, std::list<u_int>& aux, std::list<u_int>& rem)
 {
 	auto firstStart = std::next(main.begin(), pairLen * 2);
 	while (std::distance(firstStart, main.end()) >= pairLen * 2)
@@ -92,38 +70,23 @@ void PmergeMe::createAuxiliaryRemaining(std::list<unsigned int>& main, u_int pai
 	rem.splice(rem.end(), main, firstStart, main.end());
 }
 
-void PmergeMe::insertAuxiliary(std::list<unsigned int>& main, u_int pairLen, std::list<u_int>& aux)
+void PmergeMe::insertAuxiliary(std::list<unsigned int>& main, const u_int pairLen, std::list<u_int>& aux)
 {
 	u_int previousJacobsthalNumber = 1;
 	u_int jacobsthalNumber = 3;
 
-	while (aux.size() > 0)
+	while (!aux.empty())
 	{
-		int auxIndex = jacobsthalNumber - (previousJacobsthalNumber + 1);
+		int auxIndex = jacobsthalNumber - (previousJacobsthalNumber + 1); // NOLINT(*-narrowing-conversions)
 		if (static_cast<u_int>(auxIndex) >= aux.size() / pairLen)
-			auxIndex = (aux.size() / pairLen) - 1;
+			auxIndex = (aux.size() / pairLen) - 1; // NOLINT(*-narrowing-conversions)
 
 		while (auxIndex >= 0)
 		{
-			auto searchStart = std::next(main.begin(), pairLen - 1);
-			std::list<u_int>::iterator searchEnd = main.end();
-
-			// {
-			// 	std::cout << "auxIndex: " << auxIndex << std::endl;
-			// 	std::cout << "cond : " <<((jacobsthalNumber + previousJacobsthalNumber - 1) * pairLen + pairLen - 1) << std::endl;
-			// 	std::cout << "main size : " << main.size() << std::endl;
-			// }
-
+			auto searchStart = main.begin();
+			auto searchEnd = main.end();
 			if (((jacobsthalNumber + previousJacobsthalNumber - 1) * pairLen) + pairLen - 1 < main.size())
-				searchEnd = std::next(searchStart, (jacobsthalNumber + previousJacobsthalNumber - 1) * pairLen);
-
-			// {
-			// 	std::cout << "Jacobsthal number: " << jacobsthalNumber << std::endl;
-			// 	if (searchEnd != main.end())
-			// 		std::cout << "Search until : " << *searchEnd << std::endl;
-			// 	else
-			// 		std::cout << "Search until end " << std::endl;
-			// }
+				searchEnd = std::next(searchStart, ((jacobsthalNumber + previousJacobsthalNumber - 1) * pairLen));
 
 			std::list<u_int>::iterator pairStart;
 			if ((auxIndex * pairLen) < aux.size())
@@ -133,20 +96,9 @@ void PmergeMe::insertAuxiliary(std::list<unsigned int>& main, u_int pairLen, std
 			auto pairEnd = std::next(pairStart, pairLen);
 
 			auto insertionPosition = getInsertionPosition(searchStart, searchEnd, pairLen, *std::prev(pairEnd));
-			if (insertionPosition == searchStart)
-				insertionPosition = main.begin();
-
-			// {
-			// 	std::cout << "Insertion position: " << *insertionPosition << std::endl;
-			// 	std::cout << "Insertion range: ";
-			// 	for (auto it = pairStart; it != pairEnd; ++it)
-			// 		std::cout << *it << " ";
-			// 	std::cout << std::endl;
-			// }
 
 			main.splice(insertionPosition, aux, pairStart, pairEnd);
 			auxIndex--;
-			std::cout << std::endl;
 		}
 		u_int previousPreviousJacobsthalNumber = previousJacobsthalNumber;
 		previousJacobsthalNumber = jacobsthalNumber;
@@ -155,7 +107,7 @@ void PmergeMe::insertAuxiliary(std::list<unsigned int>& main, u_int pairLen, std
 
 }
 
-void PmergeMe::handleRemaining(std::list<unsigned int>& main, std::list<u_int>& rem, u_int pairLen)
+void PmergeMe::handleRemaining(std::list<unsigned int>& main, std::list<u_int>& rem, const u_int pairLen)
 {
 	if (!rem.empty())
 	{
@@ -164,7 +116,7 @@ void PmergeMe::handleRemaining(std::list<unsigned int>& main, std::list<u_int>& 
 			auto pairStart = rem.begin();
 			auto pairEnd = std::next(pairStart, pairLen);
 
-			auto insertionPosition = getInsertionPosition(std::next(main.begin(), pairLen - 1), main.end(), pairLen, *std::prev(pairEnd));
+			auto insertionPosition = getInsertionPosition(main.begin(), main.end(), pairLen, *std::prev(pairEnd));
 			main.splice(insertionPosition, rem, pairStart, pairEnd);
 		}
 		if (!rem.empty())
@@ -172,36 +124,38 @@ void PmergeMe::handleRemaining(std::list<unsigned int>& main, std::list<u_int>& 
 	}
 }
 
-//TODO NOT INCLUDE THE END ???
 std::list<u_int>::iterator PmergeMe::getInsertionPosition(const std::list<u_int>::iterator& begin,
-	const std::list<u_int>::iterator& end, u_int pairLen, u_int value)
+	const std::list<u_int>::iterator& end, const u_int pairLen, const u_int value)
 {
 	if (begin == end)
 		return (begin);
-	if (pairLen > std::distance(begin, end))
-		throw std::invalid_argument("Invalid pair length");
 
-	auto searchStart = begin;
-	auto searchEnd = end;
+	auto searchStart = std::next(begin, pairLen - 1);
+	auto searchEnd = std::prev(end);
+	if (std::distance(searchStart, searchEnd) % pairLen != 0)
+		throw std::runtime_error("Error");
 
-	while (std::distance(searchStart, searchEnd) > pairLen) {
-		int middleDistance = ((std::distance(searchStart, searchEnd) / 2) / pairLen) * pairLen;
-		if (middleDistance == 0)
-			break ;
+	if (value < *searchStart)
+		return (begin);
+	if (value > *searchEnd)
+		return (end);
+
+	while (std::distance(searchStart, searchEnd) > pairLen)
+	{
+		int middleDistance = ((std::distance(searchStart, searchEnd) / 2) / pairLen) * pairLen; // NOLINT(*-narrowing-conversions)
 		auto middle = std::next(searchStart, middleDistance);
+
 		if (*middle == value)
 			return (std::next(middle));
-		else if (*middle > value)
+		if (*middle > value)
 			searchEnd = middle;
 		else
 			searchStart = middle;
 	}
-	if (searchStart == begin && value < *begin)
-		return (begin);
 	return (std::next(searchStart));
 }
 
-u_int PmergeMe::getNextJacobsthalNumber(u_int previous, u_int previousPrevious)
+u_int PmergeMe::getNextJacobsthalNumber(const u_int previous, const u_int previousPrevious)
 {
 	return (previous + (2 * previousPrevious));
 }
