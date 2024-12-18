@@ -11,22 +11,22 @@
 #include <iostream>
 
 class PmergeMe {
-	private:
-		static constexpr int ARBITRARY_VALUE = 10;
-
 	public:
-		static std::list<u_int>		mergeInsertSort(const std::list<u_int>& list);
-		static std::vector<u_int>	mergeInsertSort(const std::vector<u_int>& vector);
+		static std::list<u_int>		sort(const std::list<u_int>& list);
+		static std::vector<u_int>	sort(const std::vector<u_int>& vector);
 
 		~PmergeMe();
 
 	private:
-		static std::list<u_int>		insertSort(const std::list<u_int>& list);
-		static std::vector<u_int>	insertSort(const std::vector<u_int>& vector);
-		static std::list<u_int>		mergeSort(const std::list<u_int>& v1, const std::list<u_int>& v2);
-		static std::vector<u_int>	mergeSort(const std::vector<u_int>& v1, const std::vector<u_int>& v2);
+		static u_int	doPairSorting(std::list<unsigned int>& list, u_int pairLen);
+		static void		doInsertionSorting(std::list<unsigned int>& main, u_int pairLen);
+		static void		insertAuxiliary(std::list<unsigned int>& main, u_int pairLen, std::list<u_int>& aux);
+		static void		handleRemaining(std::list<unsigned int>& main, std::list<u_int>& rem, u_int pairLen);
+		static void		createAuxiliaryRemaining(std::list<unsigned int>& main, u_int pairLen, std::list<u_int>& aux, std::list<u_int>& rem);
 
-		static u_int				getUnderJacobsthalNumber(u_int number);
+		static std::list<u_int>::iterator	getInsertionPosition(const std::list<u_int>::iterator& begin, const std::list<u_int>::iterator& end, u_int pairLen, u_int value);
+
+		static u_int				getNextJacobsthalNumber(u_int previous, u_int previousPrevious);
 
 		PmergeMe();
 		PmergeMe(const PmergeMe &);
