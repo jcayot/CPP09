@@ -95,7 +95,8 @@ void PmergeMe::insertAuxiliary(std::list<unsigned int>& main, const u_int pairLe
 				pairStart = std::prev(aux.end(), pairLen);
 			auto pairEnd = std::next(pairStart, pairLen);
 
-			auto insertionPosition = getInsertionPosition(searchStart, searchEnd, pairLen, *std::prev(pairEnd));
+			auto insertionPosition = getInsertionPosition<std::list<u_int>>(searchStart, searchEnd, pairLen,
+				*std::prev(pairEnd));
 
 			main.splice(insertionPosition, aux, pairStart, pairEnd);
 			auxIndex--;
@@ -116,43 +117,13 @@ void PmergeMe::handleRemaining(std::list<unsigned int>& main, std::list<u_int>& 
 			auto pairStart = rem.begin();
 			auto pairEnd = std::next(pairStart, pairLen);
 
-			auto insertionPosition = getInsertionPosition(main.begin(), main.end(), pairLen, *std::prev(pairEnd));
+			auto insertionPosition = getInsertionPosition<std::list<u_int>>(main.begin(), main.end(), pairLen,
+				*std::prev(pairEnd));
 			main.splice(insertionPosition, rem, pairStart, pairEnd);
 		}
 		if (!rem.empty())
 			main.splice(main.end(), rem, rem.begin(), rem.end());
 	}
-}
-
-std::list<u_int>::iterator PmergeMe::getInsertionPosition(const std::list<u_int>::iterator& begin,
-	const std::list<u_int>::iterator& end, const u_int pairLen, const u_int value)
-{
-	if (begin == end)
-		return (begin);
-
-	auto searchStart = std::next(begin, pairLen - 1);
-	auto searchEnd = std::prev(end);
-	if (std::distance(searchStart, searchEnd) % pairLen != 0)
-		throw std::runtime_error("Error");
-
-	if (value < *searchStart)
-		return (begin);
-	if (value > *searchEnd)
-		return (end);
-
-	while (std::distance(searchStart, searchEnd) > pairLen)
-	{
-		int middleDistance = ((std::distance(searchStart, searchEnd) / 2) / pairLen) * pairLen; // NOLINT(*-narrowing-conversions)
-		auto middle = std::next(searchStart, middleDistance);
-
-		if (*middle == value)
-			return (std::next(middle));
-		if (*middle > value)
-			searchEnd = middle;
-		else
-			searchStart = middle;
-	}
-	return (std::next(searchStart));
 }
 
 u_int PmergeMe::getNextJacobsthalNumber(const u_int previous, const u_int previousPrevious)

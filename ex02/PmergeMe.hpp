@@ -22,10 +22,12 @@ class PmergeMe {
 		static void		doInsertionSorting(std::list<unsigned int>& main, u_int pairLen);
 		static void		insertAuxiliary(std::list<unsigned int>& main, u_int pairLen, std::list<u_int>& aux);
 		static void		handleRemaining(std::list<unsigned int>& main, std::list<u_int>& rem, u_int pairLen);
-		static void		createAuxiliaryRemaining(std::list<unsigned int>& main, u_int pairLen, std::list<u_int>& aux, std::list<u_int>& rem);
+		static void		createAuxiliaryRemaining(std::list<unsigned int>& main, u_int pairLen, std::list<u_int>& aux,
+			std::list<u_int>& rem);
 
-		static std::list<u_int>::iterator	getInsertionPosition(const std::list<u_int>::iterator& begin, const std::list<u_int>::iterator& end, u_int pairLen, u_int value);
-
+		template<typename T>
+		static typename T::iterator	getInsertionPosition(const typename T::iterator& begin, const typename
+			T::iterator& end, u_int pairLen,u_int value);
 		static u_int				getNextJacobsthalNumber(u_int previous, u_int previousPrevious);
 
 		PmergeMe();
@@ -33,5 +35,7 @@ class PmergeMe {
 
 		PmergeMe &operator=(const PmergeMe &);
 };
+
+#include "PmergeMe.tpp"
 
 #endif
