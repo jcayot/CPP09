@@ -19,11 +19,17 @@ class PmergeMe {
 
 	private:
 		static u_int	doPairSorting(std::list<unsigned int>& list, u_int pairLen);
+		static u_int	doPairSorting(std::vector<unsigned int>& vector, u_int pairLen);
 		static void		doInsertionSorting(std::list<unsigned int>& main, u_int pairLen);
-		static void		insertAuxiliary(std::list<unsigned int>& main, u_int pairLen, std::list<u_int>& aux);
-		static void		handleRemaining(std::list<unsigned int>& main, std::list<u_int>& rem, u_int pairLen);
+		static void		doInsertionSorting(std::vector<unsigned int>& main, u_int pairLen);
 		static void		createAuxiliaryRemaining(std::list<unsigned int>& main, u_int pairLen, std::list<u_int>& aux,
 			std::list<u_int>& rem);
+		static void		createAuxiliaryRemaining(std::vector<unsigned int>& main, u_int pairLen,
+			std::vector<u_int>& aux, std::vector<u_int>& rem);
+		static void		insertAuxiliary(std::list<unsigned int>& main, u_int pairLen, std::list<u_int>& aux);
+		static void		insertAuxiliary(std::vector<unsigned int>& main, u_int pairLen, std::vector<u_int>& aux);
+		static void		handleRemaining(std::list<unsigned int>& main, std::list<u_int>& rem, u_int pairLen);
+		static void		handleRemaining(std::vector<unsigned int>& main, std::vector<u_int>& rem, u_int pairLen);
 
 		template<typename T>
 		static typename T::iterator	getInsertionPosition(const typename T::iterator& begin, const typename
