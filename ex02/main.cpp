@@ -48,12 +48,12 @@ int	main(int argc, char *argv[]) {
 		throw std::runtime_error("List is not sorted");
 	const unsigned long listTime = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
 
-	// start = std::chrono::high_resolution_clock::now();
-	// vec = PmergeMe::sort(vec);
-	// end = std::chrono::high_resolution_clock::now();
-	// if (std::is_sorted(vec.begin(), vec.end()) == false)
-	// 	throw std::runtime_error("Vector is not sorted");
-	// const unsigned long vecTime = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
+	start = std::chrono::high_resolution_clock::now();
+	vec = PmergeMe::sort(vec);
+	end = std::chrono::high_resolution_clock::now();
+	if (std::is_sorted(vec.begin(), vec.end()) == false)
+		throw std::runtime_error("Vector is not sorted");
+	const unsigned long vecTime = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
 
 	std::cout << "After: " << std::endl;
 	for (const unsigned int& it : list) {
@@ -62,12 +62,13 @@ int	main(int argc, char *argv[]) {
 	std::cout << std::endl;
 	std::cout << "Time to process a range of " << argc - 1 << " elements with list: " << listTime << " microseconds"
 		<< std::endl;
-	// std::cout << "Time to process a range of " << argc - 1 << " elements with vec: " << vecTime << " microseconds"
-	// 	<< std::endl;
+	std::cout << "Time to process a range of " << argc - 1 << " elements with vec: " << vecTime << " microseconds"
+		<< std::endl;
 	return (0);
 }
 
 // int main() {
-// 	PmergeMe::sort((std::list<u_int>) {11, 2, 17, 0, 16, 8, 6, 15, 10, 3, 21, 1, 18, 9, 14, 19,12, 5, 4, 20, 13, 7});
+// 	// PmergeMe::sort((std::list<u_int>) {11, 2, 17, 0, 16, 8, 6, 15, 10, 3, 21, 1, 18, 9, 14, 19,12, 5, 4, 20, 13, 7});
+// 	PmergeMe::sort((std::vector<u_int>) {11, 2, 17, 0, 16, 8, 6, 15, 10, 3, 21, 1, 18, 9, 14, 19,12, 5, 4, 20, 13, 7});
 // 	return (0);
 // }
