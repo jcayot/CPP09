@@ -82,18 +82,6 @@ void PmergeMe::doInsertionSorting(std::vector<unsigned int>& main, const u_int p
 	std::vector<u_int> aux, rem;
 
 	createAuxiliaryRemaining(main, pairLen, aux, rem);
-	// std::cout << main.size() << std::endl;
-	// for (u_int n : main)
-	// 	std::cout << n << " ";
-	// std::cout << std::endl;
-	// std::cout << aux.size() << std::endl;
-	// for (u_int n : aux)
-	// 	std::cout << n << " ";
-	// std::cout << std::endl;
-	// std::cout << rem.size() << std::endl;
-	// for (u_int n : rem)
-	// 	std::cout << n << " ";
-	// std::cout << std::endl;
 	insertAuxiliary(main, pairLen, aux);
 	handleRemaining(main, rem, pairLen);
 
